@@ -177,6 +177,7 @@ sub init {
 		'ignoredarticles'       => "The El La Los Las Le Les",
 		'splitList'             => ';',
 		'browseagelimit'        => 100,
+		'browsePopularityMaxDays' => 180,
 		'groupdiscs'            => 1,
 		'persistPlaylists'      => 1,
 		'playtrackalbum'        => 1,
@@ -190,6 +191,7 @@ sub init {
 		'variousArtistAutoIdentification' => 1,
 		'useUnifiedArtistsList' => 0,
 		'useTPE2AsAlbumArtist'  => 1,
+		'useTIT1AsWork'         => 1,
 		'variousArtistsString'  => undef,
 		'releaseTypesToIgnore'  => [],
 		'ignoreReleaseTypes'    => 0,
@@ -322,7 +324,7 @@ sub init {
 	$prefs->setValidate({ 'validator' => 'intlimit', 'low' =>    0,                 }, 'startDelay'  );
 	$prefs->setValidate({ 'validator' => 'intlimit', 'low' =>    0,                 }, 'playDelay'   );
 	$prefs->setValidate({ 'validator' => 'intlimit', 'low' =>    0, 'high' =>  1000 }, 'packetLatency');
-	$prefs->setValidate({ 'validator' => 'intlimit', 'low' =>   10, 'high' =>  1000 }, 'minSyncAdjust');
+	$prefs->setValidate({ 'validator' => 'intlimit', 'low' =>    5, 'high' =>  1000 }, 'minSyncAdjust');
 
 	$prefs->setValidate({ 'validator' => sub { $_[1] ne '' } }, 'playername');
 
@@ -408,7 +410,7 @@ sub init {
 
 	$prefs->setChange(
 		sub { Slim::Control::Request::executeRequest(undef, ['wipecache', $prefs->get('dontTriggerScanOnPrefChange') ? 'queue' : undef]) },
-		qw(splitList groupdiscs useTPE2AsAlbumArtist cleanupReleaseTypes worksScan)
+		qw(splitList groupdiscs useTPE2AsAlbumArtist useTIT1AsWork cleanupReleaseTypes worksScan)
 	);
 
 	$prefs->setChange( sub {
